@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMW Ultimate Driving Machine | Premium Showcase & Configurator</title>
+    <meta name="description" content="Experience the pinnacle of automotive luxury and performance. Discover, configure, compare, and test drive the complete lineup of BMW M, BMW i Electric, and X Family vehicles.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bmw: {
+                            blue: '#1C69D4',
+                            dark: '#050505',
+                            mred: '#E31C25',
+                            icyan: '#00E5FF',
+                            silver: '#C0C0C0',
+                            surface: '#0E0F12'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#050505] text-white antialiased selection:bg-bmw-blue selection:text-white">
+
+    <!-- Global Fixed Navigation -->
+    <header>
+        <nav id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-5">
+            <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                <!-- BMW Logo -->
+                <a href="#" class="flex items-center gap-3 group" aria-label="BMW Home">
+                    <svg class="h-8 w-8 text-white transition-transform group-hover:scale-105" viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="4"/>
+                        <circle cx="50" cy="50" r="41" stroke="white" stroke-opacity="0.2" stroke-width="1"/>
+                        <path d="M50 8 A42 42 0 0 1 92 50 L50 50 Z" fill="#1C69D4"/>
+                        <path d="M8 50 A42 42 0 0 1 50 8 L50 50 Z" fill="#FFFFFF"/>
+                        <path d="M50 92 A42 42 0 0 1 8 50 L50 50 Z" fill="#1C69D4"/>
+                        <path d="M92 50 A42 42 0 0 1 50 92 L50 50 Z" fill="#FFFFFF"/>
+                        <circle cx="50" cy="50" r="42" stroke="white" stroke-width="1.5" fill="none"/>
+                    </svg>
+                    <span class="text-xl font-black tracking-[0.2em] uppercase text-white font-sans">BMW</span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden lg:flex items-center gap-8 text-xs font-semibold uppercase tracking-[0.15em] text-gray-300">
+                    <a href="#models" class="hover:text-bmw-blue transition-colors">Models</a>
+                    <button onclick="window.BMW_APP.state.openModal('configurator', 'm2')" class="hover:text-bmw-blue transition-colors uppercase tracking-[0.15em]">Build Your BMW</button>
+                    <a href="#bmw-m" class="hover:text-bmw-mred transition-colors flex items-center gap-1">
+                        <span>BMW</span> <span class="text-bmw-mred font-extrabold">M</span>
+                    </a>
+                    <a href="#bmw-i" class="hover:text-bmw-icyan transition-colors flex items-center gap-1">
+                        <span>BMW</span> <span class="text-bmw-icyan font-extrabold">i</span>
+                    </a>
+                    <a href="#x-family" class="hover:text-white transition-colors">X Family</a>
+                    <a href="#technology" class="hover:text-white transition-colors">Technology</a>
+                    <a href="#interior" class="hover:text-white transition-colors">Interior</a>
+                    <a href="#comparison" class="hover:text-white transition-colors">Compare</a>
+                    <a href="#offers" class="hover:text-white transition-colors">Offers</a>
+                </div>
+
+                <!-- Action Tools -->
+                <div class="flex items-center gap-4">
+                    <!-- Search Trigger -->
+                    <button id="search-btn" class="p-2 text-gray-300 hover:text-bmw-blue hover:bg-white/5 rounded-full transition-all" title="Search BMW Models (Ctrl+K)" aria-label="Search">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </button>
+                    
+                    <!-- Dealer Locator Trigger -->
+                    <button id="dealer-btn" class="p-2 text-gray-300 hover:text-bmw-blue hover:bg-white/5 rounded-full transition-all hidden md:flex items-center" title="Find a BMW Center" aria-label="Find Dealer">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="2" fill="currentColor"/></svg>
+                    </button>
+
+                    <!-- My BMW Account Trigger -->
+                    <button id="account-btn" class="p-2 text-gray-300 hover:text-bmw-blue hover:bg-white/5 rounded-full transition-all hidden md:flex items-center relative" title="My BMW Account & Saved Builds" aria-label="Account">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </button>
+
+                    <!-- Mobile Hamburger Menu Button -->
+                    <button id="menu-btn" class="lg:hidden p-2 text-white hover:text-bmw-blue transition-colors" aria-label="Open Mobile Menu">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-[#050505]/95 backdrop-blur-2xl transform translate-x-full transition-transform duration-500 flex flex-col justify-between p-8">
+        <div class="flex items-center justify-between border-b border-white/10 pb-6">
+            <span class="text-xl font-bold tracking-[0.2em] text-white">BMW MENU</span>
+            <button id="close-mobile-menu" class="text-gray-400 hover:text-white p-2" aria-label="Close Mobile Menu">
+                <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="flex flex-col gap-6 text-2xl font-light tracking-wider my-auto">
+            <a href="#models" class="mobile-link hover:text-bmw-blue transition-colors">Models</a>
+            <button onclick="window.BMW_APP.state.openModal('configurator', 'm2')" class="mobile-link text-left hover:text-bmw-blue transition-colors">Build Your BMW</button>
+            <a href="#bmw-m" class="mobile-link hover:text-bmw-mred transition-colors">BMW M Performance</a>
+            <a href="#bmw-i" class="mobile-link hover:text-bmw-icyan transition-colors">BMW i All-Electric</a>
+            <a href="#x-family" class="mobile-link hover:text-white transition-colors">X Family SAVs</a>
+            <a href="#technology" class="mobile-link hover:text-white transition-colors">Technology</a>
+            <a href="#interior" class="mobile-link hover:text-white transition-colors">Interior Experience</a>
+            <a href="#comparison" class="mobile-link hover:text-white transition-colors">Compare Models</a>
+            <a href="#offers" class="mobile-link hover:text-white transition-colors">Offers & Test Drive</a>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 pt-6 border-t border-white/10 text-sm">
+            <button id="mobile-dealer-btn" class="p-3 glass rounded-lg text-center hover:border-white transition-colors font-medium">
+                Find Dealer
+            </button>
+            <button id="mobile-account-btn" class="p-3 glass rounded-lg text-center hover:border-white transition-colors font-medium">
+                My Saved Builds
+            </button>
+        </div>
+    </div>
+
+    <!-- Full-Screen Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl transform translate-y-full transition-transform duration-500 flex flex-col">
+        <div class="max-w-5xl mx-auto w-full px-6 pt-20 pb-10 flex-1 flex flex-col">
+            <div class="flex items-center justify-between mb-8">
+                <span class="text-xs font-bold tracking-[0.25em] text-gray-400 uppercase">Search BMW Lineup & Innovations</span>
+                <button id="close-search" class="text-gray-400 hover:text-white p-2" aria-label="Close Search">
+                    <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="relative mb-6">
+                <input type="text" id="search-input" placeholder="Search by model, series, electric range, or features..." class="w-full bg-transparent border-b-2 border-white/20 text-3xl md:text-4xl py-4 focus:outline-none focus:border-bmw-blue transition-colors text-white placeholder-gray-600 font-light">
+            </div>
+
+            <!-- Quick Filter Recommendations -->
+            <div class="flex flex-wrap gap-2 mb-8">
+                <span class="text-xs text-gray-500 self-center mr-2">Suggestions:</span>
+                <button class="search-pill px-3 py-1.5 rounded-full glass text-xs font-medium text-gray-300 hover:text-white hover:border-bmw-blue transition-colors" data-query="M3">M3 Competition</button>
+                <button class="search-pill px-3 py-1.5 rounded-full glass text-xs font-medium text-gray-300 hover:text-white hover:border-bmw-icyan transition-colors" data-query="Electric">All-Electric i Series</button>
+                <button class="search-pill px-3 py-1.5 rounded-full glass text-xs font-medium text-gray-300 hover:text-white hover:border-white transition-colors" data-query="X5">X5 Sports Activity Vehicle</button>
+                <button class="search-pill px-3 py-1.5 rounded-full glass text-xs font-medium text-gray-300 hover:text-white hover:border-white transition-colors" data-query="Roadster">Z4 Roadster</button>
+                <button class="search-pill px-3 py-1.5 rounded-full glass text-xs font-medium text-gray-300 hover:text-white hover:border-white transition-colors" data-query="Curved Display">Curved Display Tech</button>
+            </div>
+
+            <!-- Dynamic Live Results Container -->
+            <div id="search-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-[60vh] pr-2">
+                <!-- Populated dynamically by search.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=2100&q=85" alt="BMW M2 Coupé High Performance" class="w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000 ease-out">
+                <div class="hero-overlay absolute inset-0"></div>
+            </div>
+
+            <div class="relative z-10 text-center px-6 max-w-5xl mx-auto pt-24 pb-16">
+                <p class="text-bmw-blue uppercase tracking-[0.35em] text-xs md:text-sm mb-4 font-extrabold animate-pulse">The Ultimate Driving Machine</p>
+                <h1 class="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-6 tracking-tighter leading-none">
+                    DESIGNED TO<br><span class="text-gradient">MOVE YOU</span>
+                </h1>
+                <p class="text-gray-300 text-base md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                    Motorsport engineering harmonized with bespoke luxury. Discover instantaneous exhilaration, intelligent cockpits, and sustainable high performance.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#models" id="hero-explore-btn" class="bmw-btn-white w-full sm:w-auto text-xs md:text-sm">
+                        EXPLORE MODELS
+                    </a>
+                    <button id="hero-build-btn" class="bmw-btn-outline w-full sm:w-auto text-xs md:text-sm">
+                        BUILD YOUR BMW
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scroll Down Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 pointer-events-none opacity-80">
+                <span class="text-[10px] tracking-[0.25em] uppercase text-gray-400 font-semibold">Scroll Down</span>
+                <svg class="h-5 w-5 text-bmw-blue animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+            </div>
+        </section>
+
+        <!-- Model Explorer Section -->
+        <section id="models" class="py-28 px-6 md:px-12 bg-black relative">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-14 fade-in-section">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-bmw-blue mb-2">Showcase & Discovery</p>
+                    <h2 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">EXPLORE BMW MODELS</h2>
+                    <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-light">From track-tested M coupes and pure electric Gran Coupés to commanding luxury SAVs. Engineered without compromise.</p>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="flex flex-wrap justify-center gap-2.5 mb-14 fade-in-section">
+                    <button class="filter-btn active px-6 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all bg-white text-black" data-filter="all">ALL MODELS</button>
+                    <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all border border-white/20 text-white hover:bg-white/10" data-filter="Series">SERIES</button>
+                    <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all border border-white/20 text-white hover:bg-white/10" data-filter="X">X FAMILY</button>
+                    <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all border border-white/20 text-white hover:bg-white/10" data-filter="Z">Z ROADSTER</button>
+                    <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all border border-white/20 text-white hover:bg-white/10 hover:text-bmw-mred" data-filter="M">BMW M</button>
+                    <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all border border-white/20 text-white hover:bg-white/10 hover:text-bmw-icyan" data-filter="i">BMW i ELECTRIC</button>
+                </div>
+
+                <!-- Dynamic Model Grid -->
+                <div id="model-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Populated dynamically by modelExplorer.js -->
+                </div>
+
+                <div class="mt-12 text-center text-xs text-gray-500 font-mono">
+                    *Starting MSRP reflects manufacturer suggested demonstration pricing. Taxes, destination, and options may vary.
+                </div>
+            </div>
+        </section>
+
+        <!-- BMW M Section -->
+        <section id="bmw-m" class="py-28 px-6 md:px-12 bg-neutral-950 relative overflow-hidden">
+            <!-- Glow background -->
+            <div class="absolute -right-32 top-10 w-[500px] h-[500px] bg-bmw-mred/15 rounded-full blur-[140px] pointer-events-none"></div>
+            <div class="absolute -left-32 bottom-10 w-[400px] h-[400px] bg-bmw-mred/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="flex flex-col lg:flex-row items-center gap-14 mb-16 fade-in-section">
+                    <div class="lg:w-1/2">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-8 h-1 bg-bmw-mred"></span>
+                            <span class="text-bmw-mred uppercase tracking-[0.25em] text-xs font-extrabold">BMW M Motorsport Heritage</span>
+                        </div>
+                        <h2 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-none">
+                            M POWER.<br><span class="text-gradient-m">BORN ON THE TRACK.</span>
+                        </h2>
+                        <p class="text-gray-300 text-base md:text-lg mb-8 leading-relaxed font-light">
+                            Motorsport is the crucible of our engineering. Every BMW M model features precision cooling systems, active rear differentials, track-calibrated chassis tuning, and high-rpm TwinPower Turbo engines built to dominate both the Nürburgring and your daily commute.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="window.BMW_APP.state.setFilter('M'); document.getElementById('models').scrollIntoView({ behavior: 'smooth' });" class="bmw-btn-m text-xs">
+                                VIEW ALL M MODELS
+                            </button>
+                            <button onclick="window.BMW_APP.state.openModal('configurator', 'm3')" class="bmw-btn-outline text-xs">
+                                CONFIGURE M3 COMPETITION
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2 relative group">
+                        <div class="relative rounded-2xl overflow-hidden glass border border-red-900/30 shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1607853554439-0069ec0f29b6?auto=format&fit=crop&w=1200&q=80" alt="BMW M3 Competition Track Attack" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-8">
+                                <div>
+                                    <span class="text-xs font-mono font-bold text-bmw-mred">S58 TWIN-TURBO POWER</span>
+                                    <h3 class="text-2xl font-bold text-white">503 HP • 3.4s 0-60 MPH</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- M Model Cards (Horizontal Scroll with snap) -->
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">High-Performance Roster</span>
+                        <span class="text-xs text-gray-500 font-mono">Swipe or scroll horizontally →</span>
+                    </div>
+                    <div id="m-cards-container" class="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-thin">
+                        <!-- Populated by mPerformance.js -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BMW i Electric Section -->
+        <section id="bmw-i" class="py-28 px-6 md:px-12 bg-black relative overflow-hidden">
+            <!-- Ambient cyan glow -->
+            <div class="absolute left-1/2 top-10 -translate-x-1/2 w-[600px] h-[600px] bg-bmw-icyan/10 rounded-full blur-[160px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="text-center mb-16 fade-in-section">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-bmw-icyan text-xs font-bold tracking-widest uppercase mb-4">
+                        <span>THE FUTURE IS ELECTRIC</span>
+                    </div>
+                    <h2 class="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-none">
+                        BMW i.<br><span class="text-gradient-i">SUSTAINABLE LUXURY.</span>
+                    </h2>
+                    <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+                        Instant electric torque without rare-earth magnetic metals. Experience silent high-speed cruising, 5th-generation eDrive efficiency, and ultra-fast DC charging architectures.
+                    </p>
+                </div>
+
+                <!-- Grid of BMW i Vehicles -->
+                <div id="electric-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Populated by electricBMW.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- BMW X Family Section -->
+        <section id="x-family" class="py-28 px-6 md:px-12 bg-neutral-950 relative">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 fade-in-section">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.25em] text-bmw-blue mb-2">Sports Activity Vehicles®</p>
+                        <h2 class="text-4xl md:text-5xl font-black tracking-tight text-white">THE BMW X FAMILY</h2>
+                    </div>
+                    <p class="text-gray-400 text-sm md:text-base max-w-md font-light mt-4 md:mt-0">
+                        Commanding road presence, split power tailgates, multi-terrain capability, and unyielding cabin versatility.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- X5 -->
+                    <div class="glass rounded-xl overflow-hidden card-hover group flex flex-col justify-between">
+                        <div>
+                            <div class="overflow-hidden h-60 relative bg-neutral-900 cursor-pointer" onclick="window.BMW_APP.state.openModal('detail', 'x5')">
+                                <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80" alt="BMW X5" class="card-img w-full h-full object-cover">
+                                <div class="card-overlay absolute inset-0 bg-black/50 opacity-0 flex items-center justify-center">
+                                    <span class="px-4 py-2 bg-white text-black text-xs font-bold tracking-wider rounded">EXPLORE X5</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs font-bold text-bmw-blue uppercase tracking-widest block mb-1">SAV® Icon</span>
+                                <h3 class="text-xl font-bold text-white">BMW X5</h3>
+                                <p class="text-xs text-gray-400 mt-2">The original Sports Activity Vehicle. 375 HP with split power tailgate.</p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex gap-2">
+                            <button onclick="window.BMW_APP.state.openModal('detail', 'x5')" class="flex-1 py-2 bg-white/5 hover:bg-white/15 text-xs font-semibold rounded text-white transition-colors">Details</button>
+                            <button onclick="window.BMW_APP.state.openModal('configurator', 'x5')" class="flex-1 py-2 bg-bmw-blue hover:bg-blue-600 text-xs font-semibold rounded text-white transition-colors">Configure</button>
+                        </div>
+                    </div>
+
+                    <!-- X7 -->
+                    <div class="glass rounded-xl overflow-hidden card-hover group flex flex-col justify-between">
+                        <div>
+                            <div class="overflow-hidden h-60 relative bg-neutral-900 cursor-pointer" onclick="window.BMW_APP.state.openModal('detail', 'x7')">
+                                <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=800&q=80" alt="BMW X7" class="card-img w-full h-full object-cover">
+                                <div class="card-overlay absolute inset-0 bg-black/50 opacity-0 flex items-center justify-center">
+                                    <span class="px-4 py-2 bg-white text-black text-xs font-bold tracking-wider rounded">EXPLORE X7</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs font-bold text-bmw-blue uppercase tracking-widest block mb-1">Full-Size Luxury</span>
+                                <h3 class="text-xl font-bold text-white">BMW X7</h3>
+                                <p class="text-xs text-gray-400 mt-2">Three rows of sovereign comfort, Sky Lounge roof, and 2-axle air suspension.</p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex gap-2">
+                            <button onclick="window.BMW_APP.state.openModal('detail', 'x7')" class="flex-1 py-2 bg-white/5 hover:bg-white/15 text-xs font-semibold rounded text-white transition-colors">Details</button>
+                            <button onclick="window.BMW_APP.state.openModal('configurator', 'x7')" class="flex-1 py-2 bg-bmw-blue hover:bg-blue-600 text-xs font-semibold rounded text-white transition-colors">Configure</button>
+                        </div>
+                    </div>
+
+                    <!-- X3 -->
+                    <div class="glass rounded-xl overflow-hidden card-hover group flex flex-col justify-between">
+                        <div>
+                            <div class="overflow-hidden h-60 relative bg-neutral-900 cursor-pointer" onclick="window.BMW_APP.state.openModal('detail', 'x3')">
+                                <img src="https://images.unsplash.com/photo-1503376763036-066120622c74?auto=format&fit=crop&w=800&q=80" alt="BMW X3" class="card-img w-full h-full object-cover">
+                                <div class="card-overlay absolute inset-0 bg-black/50 opacity-0 flex items-center justify-center">
+                                    <span class="px-4 py-2 bg-white text-black text-xs font-bold tracking-wider rounded">EXPLORE X3</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs font-bold text-bmw-blue uppercase tracking-widest block mb-1">Compact Versatility</span>
+                                <h3 class="text-xl font-bold text-white">BMW X3</h3>
+                                <p class="text-xs text-gray-400 mt-2">Nimble handling, innovative ambient light bar, and practical utility.</p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex gap-2">
+                            <button onclick="window.BMW_APP.state.openModal('detail', 'x3')" class="flex-1 py-2 bg-white/5 hover:bg-white/15 text-xs font-semibold rounded text-white transition-colors">Details</button>
+                            <button onclick="window.BMW_APP.state.openModal('configurator', 'x3')" class="flex-1 py-2 bg-bmw-blue hover:bg-blue-600 text-xs font-semibold rounded text-white transition-colors">Configure</button>
+                        </div>
+                    </div>
+
+                    <!-- X4 -->
+                    <div class="glass rounded-xl overflow-hidden card-hover group flex flex-col justify-between">
+                        <div>
+                            <div class="overflow-hidden h-60 relative bg-neutral-900 cursor-pointer" onclick="window.BMW_APP.state.openModal('detail', 'x4')">
+                                <img src="https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&w=800&q=80" alt="BMW X4" class="card-img w-full h-full object-cover">
+                                <div class="card-overlay absolute inset-0 bg-black/50 opacity-0 flex items-center justify-center">
+                                    <span class="px-4 py-2 bg-white text-black text-xs font-bold tracking-wider rounded">EXPLORE X4</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs font-bold text-bmw-blue uppercase tracking-widest block mb-1">SAC® Coupé</span>
+                                <h3 class="text-xl font-bold text-white">BMW X4</h3>
+                                <p class="text-xs text-gray-400 mt-2">Sweeping fastback roofline with high-riding all-wheel drive stance.</p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex gap-2">
+                            <button onclick="window.BMW_APP.state.openModal('detail', 'x4')" class="flex-1 py-2 bg-white/5 hover:bg-white/15 text-xs font-semibold rounded text-white transition-colors">Details</button>
+                            <button onclick="window.BMW_APP.state.openModal('configurator', 'x4')" class="flex-1 py-2 bg-bmw-blue hover:bg-blue-600 text-xs font-semibold rounded text-white transition-colors">Configure</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Z4 Roadster Feature Section -->
+        <section id="z4" class="py-28 px-6 md:px-12 bg-black relative overflow-hidden">
+            <div class="absolute inset-0">
+                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1920&q=80" alt="Open road" class="w-full h-full object-cover opacity-15">
+            </div>
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="flex flex-col lg:flex-row items-center gap-14">
+                    <div class="lg:w-1/2 fade-in-section">
+                        <p class="text-bmw-blue uppercase tracking-[0.25em] text-xs font-extrabold mb-2">The Pure Roadster</p>
+                        <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight text-white">BMW Z4 M40i</h2>
+                        <p class="text-gray-300 text-base md:text-lg mb-8 max-w-xl font-light leading-relaxed">
+                            Open-air adrenaline. The BMW Z4 blends timeless classic roadster proportions with the explosive turbocharged power of the BMW B58 inline-6 engine.
+                        </p>
+                        <ul class="space-y-3 mb-10 text-sm text-gray-300">
+                            <li class="flex items-center gap-3"><span class="text-bmw-blue font-bold">✓</span> 382 HP Turbocharged Inline 6-Cylinder</li>
+                            <li class="flex items-center gap-3"><span class="text-bmw-blue font-bold">✓</span> 0–60 mph in a blistering 3.9 seconds</li>
+                            <li class="flex items-center gap-3"><span class="text-bmw-blue font-bold">✓</span> Power acoustic soft top opens in 10 seconds</li>
+                            <li class="flex items-center gap-3"><span class="text-bmw-blue font-bold">✓</span> Near-perfect 50:50 axle weight distribution with M Differential</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-4">
+                            <button id="z4-configure-btn" class="bmw-btn-primary text-xs">CONFIGURE Z4</button>
+                            <button id="z4-explore-btn" class="bmw-btn-outline text-xs">EXPLORE DETAILS</button>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 fade-in-section">
+                        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80" alt="BMW Z4 Roadster on Coast" class="w-full h-auto rounded-2xl shadow-2xl border border-white/10">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Tool Section -->
+        <section id="comparison" class="py-28 px-6 md:px-12 bg-neutral-950 border-t border-white/5">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-14 fade-in-section">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-bmw-blue mb-2">Technical Benchmarking</p>
+                    <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">COMPARE BMW MODELS</h2>
+                    <p class="text-gray-400 text-base max-w-2xl mx-auto font-light">Select up to three BMW vehicles and inspect their horsepower, acceleration, electric range, and price side-by-side.</p>
+                </div>
+
+                <!-- Model Selection Dropdowns -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 fade-in-section">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Model Slot 1</label>
+                        <select id="compare-select-1" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                            <!-- Populated by comparison.js -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Model Slot 2</label>
+                        <select id="compare-select-2" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                            <!-- Populated by comparison.js -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Model Slot 3</label>
+                        <select id="compare-select-3" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                            <!-- Populated by comparison.js -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Comparison Table Matrix -->
+                <div id="comparison-table" class="glass rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                    <!-- Populated dynamically by comparison.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology & Discover Showcase -->
+        <section id="technology" class="py-28 px-6 md:px-12 bg-black">
+            <div class="max-w-7xl mx-auto">
+                <div id="discover" class="text-center mb-16 fade-in-section">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-bmw-blue mb-2">Pioneering Engineering</p>
+                    <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">BMW TECHNOLOGY & INNOVATION</h2>
+                    <p class="text-gray-400 text-base max-w-2xl mx-auto font-light">From zero-layer curved glass operating systems to Level 2+ eye-glance automated highway pilot, experience tomorrow's automotive intelligence.</p>
+                </div>
+
+                <!-- 6 Technology Cards Grid -->
+                <div id="technology-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Populated by technology.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Interior Experience with Interactive Hotspots -->
+        <section id="interior" class="py-28 px-6 md:px-12 bg-neutral-950">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-14 fade-in-section">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-bmw-blue mb-2">Cabin Craftsmanship</p>
+                    <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">INTERIOR COCKPIT EXPERIENCE</h2>
+                    <p class="text-gray-400 text-base max-w-2xl mx-auto font-light">Click on the pulsing beacons to inspect ergonomic seating, faceted crystal glass controls, and seamless curved displays.</p>
+                </div>
+
+                <!-- Interior Hotspot Viewport Container -->
+                <div id="interior-viewport" class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-neutral-900 max-w-5xl mx-auto aspect-[16/9] sm:aspect-[16/10]">
+                    <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1600&q=85" alt="BMW High-End Interior Cockpit" class="w-full h-full object-cover pointer-events-none select-none">
+                    
+                    <!-- Popover info popup (managed by interiorExperience.js) -->
+                    <div id="hotspot-popover" class="absolute hidden z-30 transition-all duration-300"></div>
+                </div>
+
+                <!-- Hotspot Quick Jump Pills -->
+                <div id="interior-hotspot-pills" class="flex flex-wrap justify-center gap-3 mt-8 max-w-3xl mx-auto">
+                    <!-- Populated by interiorExperience.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Offers / Test Drive & Finance CTA Section -->
+        <section id="offers" class="py-32 px-6 md:px-12 bg-black relative overflow-hidden border-t border-white/5">
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-bmw-blue/15 rounded-full blur-[160px]"></div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto relative z-10 text-center">
+                <p class="text-xs font-bold uppercase tracking-[0.3em] text-bmw-blue mb-3">Begin Your Ownership Journey</p>
+                <h2 class="text-4xl md:text-6xl font-black mb-6 tracking-tight">READY TO EXPERIENCE BMW?</h2>
+                <p class="text-gray-300 text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+                    Schedule an immersive personal test drive at your nearest certified BMW Center, or customize your payment with our live finance and lease estimator.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                    <button id="test-drive-btn" class="bmw-btn-white w-full sm:w-auto text-xs md:text-sm py-4 px-10">
+                        BOOK A TEST DRIVE
+                    </button>
+                    <button id="finance-btn" class="bmw-btn-outline w-full sm:w-auto text-xs md:text-sm py-4 px-10">
+                        CALCULATE FINANCING
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="bg-neutral-950 border-t border-white/10 py-14 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-center gap-3">
+                <svg class="h-6 w-6 text-white" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="4"/>
+                    <path d="M50 8 A42 42 0 0 1 92 50 L50 50 Z" fill="#1C69D4"/>
+                    <path d="M8 50 A42 42 0 0 1 50 8 L50 50 Z" fill="#FFFFFF"/>
+                    <path d="M50 92 A42 42 0 0 1 8 50 L50 50 Z" fill="#1C69D4"/>
+                    <path d="M92 50 A42 42 0 0 1 50 92 L50 50 Z" fill="#FFFFFF"/>
+                </svg>
+                <span class="font-bold text-sm tracking-[0.2em]">BMW ULTIMATE DRIVING MACHINE</span>
+            </div>
+
+            <div class="text-gray-500 text-xs text-center md:text-left leading-relaxed">
+                © 2026 BMW North America. Premium Automotive Web Application Prototype.<br>
+                Specifications, prices, and availability are presented for demonstration and consideration purposes.
+            </div>
+
+            <div class="flex items-center gap-6 text-xs text-gray-400">
+                <a href="#models" class="hover:text-white transition-colors">Models</a>
+                <button onclick="window.BMW_APP.state.openModal('dealer')" class="hover:text-white transition-colors">Dealers</button>
+                <button onclick="window.BMW_APP.state.openModal('account')" class="hover:text-white transition-colors">My BMW</button>
+                <a href="#" class="hover:text-white transition-colors">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Vehicle Detail Modal -->
+    <div id="vehicle-detail-modal" class="fixed inset-0 z-50 bg-[#050505] overflow-y-auto transform translate-x-full modal-slide-right">
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <button id="close-detail" class="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm font-semibold tracking-wider" aria-label="Back to Models">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                BACK TO MODELS
+            </button>
+            <div id="detail-content" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Populated dynamically by vehicleModal.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Build Your BMW Configurator Modal -->
+    <div id="configurator" class="fixed inset-0 z-50 bg-[#050505] transform translate-y-full modal-slide-up flex flex-col">
+        <!-- Configurator Header -->
+        <div class="flex items-center justify-between px-8 py-5 border-b border-white/10 bg-neutral-950">
+            <div class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-bmw-blue animate-pulse"></span>
+                <h2 class="text-lg md:text-xl font-black tracking-wider uppercase">BUILD YOUR BMW</h2>
+            </div>
+            <button id="close-configurator" class="text-gray-400 hover:text-white p-2" aria-label="Close Configurator">
+                <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <!-- Left: Visualization Studio -->
+            <div class="lg:w-7/12 relative bg-[#090a0d] flex items-center justify-center p-6 md:p-12 overflow-hidden border-b lg:border-b-0 lg:border-r border-white/10">
+                <div class="relative w-full max-w-2xl flex items-center justify-center">
+                    <img id="config-image" src="" alt="BMW Configuration Preview" class="w-full h-auto max-h-[55vh] object-contain transition-all duration-500 ease-out drop-shadow-2xl">
+                </div>
+
+                <!-- Floating Spec Overlay Badge -->
+                <div class="absolute bottom-6 left-6 glass rounded-xl p-4 flex items-center gap-5 border border-white/10">
+                    <div>
+                        <p id="config-model-name" class="text-lg font-bold text-white leading-tight">BMW M2</p>
+                        <p id="config-color-badge" class="text-xs text-gray-400 border-l-2 pl-2 mt-0.5 border-bmw-blue">Alpine White</p>
+                    </div>
+                    <div class="border-l border-white/10 pl-5">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-widest block">Est. MSRP</span>
+                        <p id="config-price" class="text-xl font-bold text-bmw-blue font-mono">$63,200</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: 5-Step Customization Panel -->
+            <div class="lg:w-5/12 bg-neutral-950 flex flex-col justify-between overflow-hidden">
+                <!-- Step Tabs Bar -->
+                <div class="flex overflow-x-auto border-b border-white/10 px-6 pt-4 text-xs font-bold tracking-wider uppercase scrollbar-none flex-shrink-0">
+                    <button class="config-step-btn active px-4 py-3 border-b-2 border-bmw-blue text-white" data-step="model">1. MODEL</button>
+                    <button class="config-step-btn px-4 py-3 border-b-2 border-transparent text-gray-400 hover:text-white" data-step="exterior">2. EXTERIOR</button>
+                    <button class="config-step-btn px-4 py-3 border-b-2 border-transparent text-gray-400 hover:text-white" data-step="wheels">3. WHEELS</button>
+                    <button class="config-step-btn px-4 py-3 border-b-2 border-transparent text-gray-400 hover:text-white" data-step="interior">4. INTERIOR</button>
+                    <button class="config-step-btn px-4 py-3 border-b-2 border-transparent text-gray-400 hover:text-white" data-step="summary">5. SUMMARY</button>
+                </div>
+
+                <!-- Step Panels Container -->
+                <div class="p-6 md:p-8 overflow-y-auto flex-1">
+                    <!-- Step 1: Model Selection -->
+                    <div id="config-step-model" class="configurator-step-panel block">
+                        <h3 class="text-lg font-bold text-white mb-2">Select Your Base Model</h3>
+                        <p class="text-xs text-gray-400 mb-6">Choose from BMW M performance, pure electric i series, or executive sedans.</p>
+                        <div id="model-select-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                        <div class="mt-8 flex justify-end">
+                            <button onclick="window.BMW_APP.state.setConfiguratorStep('exterior')" class="bmw-btn-primary text-xs py-2.5">NEXT: EXTERIOR COLOR →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Exterior Color -->
+                    <div id="config-step-exterior" class="configurator-step-panel hidden">
+                        <h3 class="text-lg font-bold text-white mb-2">Exterior Paint Finish</h3>
+                        <p class="text-xs text-gray-400 mb-6">High-grade metallic lacquers and signature BMW Individual finishes.</p>
+                        <div id="color-options-container" class="space-y-3"></div>
+                        <div class="mt-8 flex justify-between">
+                            <button onclick="window.BMW_APP.state.setConfiguratorStep('model')" class="px-4 py-2 border border-white/20 text-white rounded text-xs font-semibold">← BACK</button>
+                            <button onclick="window.BMW_APP.state.setConfiguratorStep('wheels')" class="bmw-btn-primary text-xs py-2.5">NEXT: WHEELS →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Wheels -->
+                    <div id="config-step-wheels" class="configurator-step-panel hidden">
+                        <h3 class="text-lg font-bold text-white mb-2">Alloy & Forged Wheels</h3>
+                        <p class="text-xs text-gray-400 mb-6">Aerodynamically optimized and lightweight motorsport wheel options.</p>
+                        <div id="wheel-options-container" class="space-y-3"></div>
+                        <div class="mt-8 flex justify-between">
+                            <button onclick="window.BMW_APP.state.setConfiguratorStep('exterior')" class="px-4 py-2 border border-white/20 text-white rounded text-xs font-semibold">← BACK</button>
+                            <button onclick="window.BMW_APP.state.setConfiguratorStep('interior')" class="bmw-btn-primary text-xs py-2.5">NEXT: INTERIOR →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Interior -->
+                    <div id="config-step-interior" class="configurator-step-panel hidden">
+                        <h3 class="text-lg font-bold text-white mb-2">Upholstery & Cabin Seating</h3>
+                        <p class="text-xs text-gray-400 mb-6">Handcrafted full Merino leather, Vernasca, and vegan Veganza selections.</p>
+                        <div id="interior-options-container" class="space-y-3"></div>
+                        <div class="mt-8 flex justify-between">
+                            <button onclick="window.BMW_APP.state.setConfiguratorStep('wheels')" class="px-4 py-2 border border-white/20 text-white rounded text-xs font-semibold">← BACK</button>
+                            <button onclick="window.BMW_APP.state.setConfiguratorStep('summary')" class="bmw-btn-primary text-xs py-2.5">NEXT: REVIEW SUMMARY →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Summary -->
+                    <div id="config-step-summary" class="configurator-step-panel hidden">
+                        <h3 class="text-lg font-bold text-white mb-2">Configuration Summary</h3>
+                        <p class="text-xs text-gray-400 mb-6">Review your personalized BMW build specifications and estimated pricing.</p>
+                        
+                        <div id="config-summary-items" class="glass rounded-xl p-5 space-y-3 text-sm border border-white/10 mb-6"></div>
+
+                        <div class="glass rounded-xl p-5 border border-white/10 mb-6 flex justify-between items-center">
+                            <div>
+                                <span class="text-xs text-gray-400 uppercase tracking-wider block">Total Estimated MSRP</span>
+                                <span class="text-xs text-gray-500">Excluding taxes, registration & fees</span>
+                            </div>
+                            <span id="config-total-price" class="text-3xl font-extrabold text-bmw-blue font-mono">$63,200</span>
+                        </div>
+
+                        <div class="space-y-3">
+                            <button onclick="window.BMW_APP.components.Configurator.saveBuild()" class="w-full py-3.5 bg-white text-black hover:bg-gray-200 transition-colors font-bold text-xs tracking-wider rounded">
+                                SAVE TO MY BMW ACCOUNT
+                            </button>
+                            <div class="flex gap-3">
+                                <button onclick="window.BMW_APP.components.Configurator.bookTestDriveWithBuild()" class="flex-1 py-3 bg-bmw-blue hover:bg-blue-600 transition-colors font-bold text-xs tracking-wider rounded text-white text-center">
+                                    TEST DRIVE THIS BUILD
+                                </button>
+                                <button onclick="window.BMW_APP.components.Configurator.calculateFinanceWithBuild()" class="flex-1 py-3 border border-white/20 hover:bg-white/10 transition-colors font-bold text-xs tracking-wider rounded text-white text-center">
+                                    CALCULATE LEASE / LOAN
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Drive Booking Modal -->
+    <div id="test-drive-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center opacity-0 pointer-events-none modal-overlay p-4">
+        <div class="glass bg-neutral-950 border border-white/15 rounded-3xl p-6 md:p-8 max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-bmw-blue">Official Experience</span>
+                    <h3 class="text-2xl font-black text-white">Book a BMW Test Drive</h3>
+                </div>
+                <button id="close-test-drive" class="text-gray-400 hover:text-white p-2" aria-label="Close Test Drive Modal">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div id="test-drive-content-container">
+                <form id="test-drive-form" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Full Legal Name *</label>
+                        <input type="text" id="test-drive-name" name="name" required placeholder="e.g. Alexander Vance" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email Address *</label>
+                            <input type="email" id="test-drive-email" name="email" required placeholder="alex@example.com" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Phone Number *</label>
+                            <input type="tel" id="test-drive-phone" name="phone" required placeholder="(555) 019-2834" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Preferred Model *</label>
+                        <select id="test-drive-model-select" name="vehicle" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Authorized BMW Center *</label>
+                        <select id="test-drive-dealer-select" name="dealer" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Preferred Date *</label>
+                        <input type="date" id="test-drive-date" name="date" required class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-4 bg-bmw-blue hover:bg-blue-600 transition-colors font-bold text-xs tracking-wider uppercase text-white rounded">
+                            CONFIRM TEST DRIVE APPOINTMENT
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-gray-500 text-center leading-tight">
+                        Valid driver's license required upon arrival. Demonstration request simulation.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finance Calculator Modal -->
+    <div id="finance-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center opacity-0 pointer-events-none modal-overlay p-4">
+        <div class="glass bg-neutral-950 border border-white/15 rounded-3xl p-6 md:p-8 max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-bmw-blue">Financial Estimator</span>
+                    <h3 class="text-2xl font-black text-white">Payment Calculator</h3>
+                </div>
+                <button id="close-finance" class="text-gray-400 hover:text-white p-2" aria-label="Close Finance Calculator">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Mode Tabs (Finance vs Lease) -->
+            <div class="flex rounded-lg p-1 bg-neutral-900 border border-white/10 mb-6">
+                <button class="finance-mode-tab flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded transition-all bg-white text-black active" data-mode="finance">
+                    Loan Financing
+                </button>
+                <button class="finance-mode-tab flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded transition-all text-gray-400 hover:text-white" data-mode="lease">
+                    BMW Lease
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+                        <span>Vehicle Price ($)</span>
+                        <button onclick="document.getElementById('fin-price').value = window.BMW_APP.state.get().configurator.calculatedPrice; window.BMW_APP.components.FinanceCalculator.calculate();" class="text-bmw-blue hover:underline">
+                            Sync with Configurator
+                        </button>
+                    </div>
+                    <input type="number" id="fin-price" value="63200" step="500" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue font-mono">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Down Payment ($)</label>
+                        <input type="number" id="fin-down" value="10000" step="500" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Est. APR / Rate (%)</label>
+                        <input type="number" id="fin-rate" value="5.49" step="0.1" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue font-mono">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Term Length (Months)</label>
+                    <select id="fin-term" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+                        <option value="36">36 Months</option>
+                        <option value="48">48 Months</option>
+                        <option value="60" selected>60 Months (Standard)</option>
+                        <option value="72">72 Months</option>
+                    </select>
+                </div>
+
+                <!-- Live Results Display -->
+                <div class="p-6 glass rounded-2xl border border-white/10 my-4 text-center">
+                    <span class="text-xs uppercase font-bold tracking-widest text-gray-400 block mb-1">Estimated Monthly Payment</span>
+                    <p id="fin-result" class="text-4xl font-black text-bmw-blue font-mono">$1,017/mo*</p>
+                    <span id="fin-subtext" class="text-[11px] text-gray-400 block mt-1">Based on 60-month loan at 5.49% APR</span>
+                </div>
+
+                <!-- Amortization breakdown -->
+                <div class="glass p-4 rounded-xl border border-white/5 space-y-2 text-xs">
+                    <div class="flex justify-between text-gray-400">
+                        <span>Financed Principal</span>
+                        <span id="fin-principal-val" class="font-mono text-white">$53,200</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400">
+                        <span>Est. Finance Charges / Interest</span>
+                        <span id="fin-interest-val" class="font-mono text-white">$7,820</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400 border-t border-white/5 pt-2">
+                        <span class="font-bold text-white">Total Out-of-Pocket</span>
+                        <span id="fin-total-val" class="font-mono font-bold text-white">$71,020</span>
+                    </div>
+                </div>
+
+                <p class="text-[10px] text-gray-500 text-center leading-tight">
+                    *Estimated payments for demonstration purposes only. Actual rates, taxes, and dealer documentation fees determined at time of contract through BMW Financial Services NA, LLC.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official BMW Dealer Locator Modal -->
+    <div id="dealer-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center opacity-0 pointer-events-none modal-overlay p-4">
+        <div class="glass bg-neutral-950 border border-white/15 rounded-3xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-bmw-blue">Retail Network</span>
+                    <h3 class="text-2xl font-black text-white">Find a BMW Center</h3>
+                </div>
+                <button id="close-dealer" class="text-gray-400 hover:text-white p-2" aria-label="Close Dealer Locator">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="relative mb-6">
+                <input type="text" id="dealer-search-input" placeholder="Search by city, state, or zip code (e.g. New York, Austin)..." class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-bmw-blue">
+            </div>
+
+            <!-- Dealer Cards List -->
+            <div id="dealer-list-container" class="space-y-4 overflow-y-auto max-h-[50vh] pr-1">
+                <!-- Populated dynamically by dealerModal.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- My BMW Account & Saved Builds Modal Drawer -->
+    <div id="account-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center opacity-0 pointer-events-none modal-overlay p-4">
+        <div class="glass bg-neutral-950 border border-white/15 rounded-3xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-bmw-blue">Customer Portal</span>
+                    <h3 class="text-2xl font-black text-white">My BMW Profile</h3>
+                </div>
+                <button id="close-account" class="text-gray-400 hover:text-white p-2" aria-label="Close Account Modal">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Preferred Dealer Widget -->
+            <div id="account-preferred-dealer" class="mb-6"></div>
+
+            <!-- Saved Vehicle Configurations -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400">My Saved Configurations</h4>
+                </div>
+                <div id="account-saved-builds" class="space-y-3">
+                    <!-- Populated dynamically by accountModal.js -->
+                </div>
+            </div>
+
+            <!-- Scheduled Test Drives -->
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Upcoming Test Drive Reservations</h4>
+                <div id="account-test-drives" class="space-y-3">
+                    <!-- Populated dynamically by accountModal.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global App Toast Notification -->
+    <div id="app-toast" class="fixed bottom-8 right-8 z-50 glass bg-neutral-900/95 text-white px-5 py-3 rounded-xl border border-white/20 shadow-2xl text-xs font-semibold transform transition-all duration-300 translate-y-16 opacity-0 pointer-events-none flex items-center gap-3" role="status" aria-live="polite"></div>
+
+    <!-- Scripts Section (Clean Dependency Order) -->
+    <script src="js/data/vehicles.js"></script>
+    <script src="js/data/dealers.js"></script>
+    <script src="js/data/technology.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/components/navigation.js"></script>
+    <script src="js/components/modelExplorer.js"></script>
+    <script src="js/components/vehicleModal.js"></script>
+    <script src="js/components/configurator.js"></script>
+    <script src="js/components/mPerformance.js"></script>
+    <script src="js/components/electricBMW.js"></script>
+    <script src="js/components/technology.js"></script>
+    <script src="js/components/interiorExperience.js"></script>
+    <script src="js/components/comparison.js"></script>
+    <script src="js/components/search.js"></script>
+    <script src="js/components/testDriveModal.js"></script>
+    <script src="js/components/financeCalculator.js"></script>
+    <script src="js/components/dealerModal.js"></script>
+    <script src="js/components/accountModal.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

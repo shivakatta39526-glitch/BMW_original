@@ -1,0 +1,354 @@
+/**
+ * BMW Ultimate Driving Machine - Production Design System & Custom Styles
+ * Complements Tailwind CSS utilities with authentic automotive luxury accents.
+ */
+
+:root {
+    --bmw-blue: #1C69D4;
+    --bmw-blue-hover: #1557B0;
+    --bmw-blue-glow: rgba(28, 105, 212, 0.35);
+    --bmw-m-red: #E31C25;
+    --bmw-m-red-glow: rgba(227, 28, 37, 0.35);
+    --bmw-i-cyan: #00E5FF;
+    --bmw-i-cyan-glow: rgba(0, 229, 255, 0.3);
+    --bmw-silver: #C0C0C0;
+    --bmw-dark: #050505;
+    --bmw-surface: #0E0F12;
+    --bmw-surface-elevated: #16181E;
+    --glass-bg: rgba(18, 20, 26, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.09);
+    --glass-hover-border: rgba(255, 255, 255, 0.22);
+}
+
+/* Global Reset & Base */
+html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bmw-dark);
+    color: #ffffff;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+}
+
+/* Glassmorphism System */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glass:hover {
+    border-color: var(--glass-hover-border);
+}
+
+.glass-m {
+    background: rgba(26, 12, 14, 0.65);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(227, 28, 37, 0.2);
+}
+
+.glass-i {
+    background: rgba(10, 24, 32, 0.65);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.glass-nav-scrolled {
+    background: rgba(5, 5, 7, 0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Gradient text accents */
+.text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #d4d4d8 50%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-blue {
+    background: linear-gradient(135deg, #ffffff 0%, #60a5fa 50%, #1C69D4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-m {
+    background: linear-gradient(135deg, #ffffff 0%, #f87171 50%, #E31C25 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-i {
+    background: linear-gradient(135deg, #ffffff 0%, #67e8f9 50%, #00E5FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Hero Overlay Cinematic Vignette */
+.hero-overlay {
+    background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.65) 65%, #050505 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 40%, #050505 100%);
+}
+
+/* Automotive Card Hover System */
+.card-hover {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+.card-hover .card-img {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover:hover .card-img {
+    transform: scale(1.06);
+}
+.card-hover .card-overlay {
+    transition: opacity 0.35s ease;
+}
+.card-hover:hover .card-overlay {
+    opacity: 1;
+}
+
+/* Interior Interactive Hotspots */
+.hotspot-wrapper {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+}
+
+.hotspot-beacon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(28, 105, 212, 0.6);
+    border: 2px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(28, 105, 212, 0.8);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hotspot-beacon::after {
+    content: '';
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    animation: hotspotPulse 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.hotspot-beacon:hover, .hotspot-beacon.active {
+    background: #1C69D4;
+    transform: scale(1.2);
+    border-color: #60a5fa;
+    box-shadow: 0 0 25px rgba(28, 105, 212, 1);
+}
+
+@keyframes hotspotPulse {
+    0% { transform: scale(0.6); opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* Swatch Selections */
+.swatch-color {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.25s ease;
+}
+
+.swatch-color:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.swatch-color.selected {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 3px var(--bmw-blue);
+    transform: scale(1.12);
+}
+
+.swatch-wheel, .swatch-interior {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.swatch-wheel:hover, .swatch-interior:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.swatch-wheel.selected, .swatch-interior.selected {
+    border-color: var(--bmw-blue);
+    background: rgba(28, 105, 212, 0.12);
+    box-shadow: 0 0 0 1px var(--bmw-blue);
+}
+
+/* Scroll Fade Animations */
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Modal Transition System */
+.modal-overlay {
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.modal-slide-right {
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-slide-up {
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Comparison sticky table headers */
+.comparison-matrix-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Button & Link Polish */
+.bmw-btn-primary {
+    background-color: var(--bmw-blue);
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.bmw-btn-primary:hover {
+    background-color: var(--bmw-blue-hover);
+    box-shadow: 0 0 20px var(--bmw-blue-glow);
+    transform: translateY(-1px);
+}
+
+.bmw-btn-white {
+    background-color: #ffffff;
+    color: #050505;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.bmw-btn-white:hover {
+    background-color: #e4e4e7;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.bmw-btn-outline {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.bmw-btn-outline:hover {
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.bmw-btn-m {
+    background-color: var(--bmw-m-red);
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.bmw-btn-m:hover {
+    background-color: #c0141c;
+    box-shadow: 0 0 20px var(--bmw-m-red-glow);
+    transform: translateY(-1px);
+}
+
+.bmw-btn-i {
+    background-color: var(--bmw-i-cyan);
+    color: #050505;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.bmw-btn-i:hover {
+    background-color: #33ebff;
+    box-shadow: 0 0 25px var(--bmw-i-cyan-glow);
+    transform: translateY(-1px);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

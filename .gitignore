@@ -1,0 +1,29 @@
+# Environment variables and secrets - NEVER COMMIT
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# Node dependencies
+node_modules/
+server/node_modules/
+
+# Database files
+server/data/*.sqlite
+server/data/*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+server/logs/
+*.log
+npm-debug.log*
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
